@@ -55,7 +55,9 @@ def main(args=[]):
     
     # compile the regex for the search and put up a CSV header.
     searcher = re.compile(pattern)
-    result = "Date,Time,User\n"
+    header = "Date,Time,User\n"
+    result = ""
+    msg_body = ""
     
     # If we can open the file, read every line and scrape our data.
     try:
@@ -74,10 +76,15 @@ def main(args=[]):
         print("Cannot open file " + filename + "due to an I/O error.", file=sys.stderr)
     except NameError:
         print("Unable to find file " + filename + ". Check your path and try again.", file=sys.stderr)
-        
+    
+    if result:
+        msg_body = header + result
+    else:
+        msg_body = "No entries for this date.\n"
+    
     # send out our CSV, unless we don't have all email creds or 'noemail' is in the program args, in which case print them
     if smtp_server and smtp_user and smtp_pass and smtp_sender and smtp_recipients and not ("noemail" in args):
-        message = MIMEText(result)
+        message = MIMEText(msg_body)
         message['Subject'] = "Latchscan results for " + target_date.isoformat()
         message['From'] = smtp_sender
         message['To'] = smtp_recipients
@@ -92,7 +99,7 @@ def main(args=[]):
         finally:
             mail.quit()
     else:
-        print(result)
+        print(msg_body)
         
 
 if (len(sys.argv) >= 2):
