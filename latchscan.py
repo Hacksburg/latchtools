@@ -73,7 +73,7 @@ def main(args=[]):
                     else:
                         result += "[unauthorized]\n"
     except IOError:
-        print("Cannot open file " + filename + "due to an I/O error.", file=sys.stderr)
+        print("Cannot open file " + filename + " due to an I/O error.", file=sys.stderr)
     except NameError:
         print("Unable to find file " + filename + ". Check your path and try again.", file=sys.stderr)
     
