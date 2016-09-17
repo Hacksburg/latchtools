@@ -49,6 +49,9 @@ def main(args=[]):
     except ValueError:
         print("No date found, using today's.", file=sys.stderr)
         target_date = date.today()
+    except IndexError:
+        print("No date found, using today's.", file=sys.stderr)
+        target_date = date.today()
     
     # compile the regex for the search and put up a CSV header.
     searcher = re.compile(pattern)
