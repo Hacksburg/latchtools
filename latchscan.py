@@ -45,7 +45,7 @@ smtp_recipients = ""
 def main(args=[]):
     # Can we convert the first argument passed in into a date? If not, use today's date.
     try:
-        target_date = datetime.strptime(args[0], date_format)
+        target_date = datetime.strptime(args[0], date_format).date()
     except ValueError:
         print("No date found, using today's.", file=sys.stderr)
         target_date = date.today()
@@ -65,7 +65,7 @@ def main(args=[]):
             for line in f:
                 hit = searcher.search(line)
                 # If we get a hit, and if the date is today's, start grabbing things
-                if hit and (datetime.strptime(hit.group(1), date_format) == target_date):
+                if hit and (datetime.strptime(hit.group(1), date_format).date() == target_date):
                     result += hit.group(1) + "," + hit.group(2) + ","
                     # If the user was authorized, print their name. If not, print [unauthorized] instead of their card data.
                     if hit.group(3) == "A":
